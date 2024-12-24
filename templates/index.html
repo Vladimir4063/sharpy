@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pantalla Compartida</title>
+    <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"></script>
+</head>
+
+<body>
+
+    <h3 style="text-align: center;">Pantalla</h3>
+    <div style="text-align: center;">
+        <img id="shared_screen" style="border: 1px solid black;" alt="Esperando transmisión...">
+    </div>
+
+    <script>
+        const socket = io();
+
+        // Actualizar la imagen cuando se reciba un nuevo frame
+        socket.on('screen_update', (data) => {
+            const img = document.getElementById('shared_screen');
+            img.src = `data:image/jpeg;base64,${data.image}`;
+        });
+    </script>
+</body>
+
+</html>
+
