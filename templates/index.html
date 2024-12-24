@@ -4,27 +4,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pantalla Compartida</title>
-    <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"></script>
+    <title>Compartir Pantalla</title>
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
 </head>
 
 <body>
-
-    <h3 style="text-align: center;">Pantalla</h3>
-    <div style="text-align: center;">
-        <img id="shared_screen" style="border: 1px solid black;" alt="Esperando transmisión...">
-    </div>
+    <h1>Compartir Pantalla</h1>
+    <button id="toggle_stream">Iniciar Streaming</button>
+    <img id="shared_screen" style="width: 100%; max-width: auto;">
 
     <script>
         const socket = io();
+        let isStreaming = false;
 
-        // Actualizar la imagen cuando se reciba un nuevo frame
+        document.getElementById('toggle_stream').addEventListener('click', () => {
+            isStreaming = !isStreaming;
+            socket.emit('toggle_stream', { is_streaming: isStreaming });
+            document.getElementById('toggle_stream').innerText = isStreaming ? 'Detener Streaming ' : 'Iniciar Streaming ';
+        });
+
         socket.on('screen_update', (data) => {
             const img = document.getElementById('shared_screen');
             img.src = `data:image/jpeg;base64,${data.image}`;
         });
     </script>
+
+    <link rel="manifest" href="/static/manifest.json">
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/static/service-worker.js')
+                .then(() => console.log('Service Worker registrado'))
+                .catch((err) => console.error('Error al registrar Service Worker:', err));
+        }
+    </script>
+
 </body>
 
 </html>
-
