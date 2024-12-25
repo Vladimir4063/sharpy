@@ -31,6 +31,12 @@ def capture_and_send_screen():
         time.sleep(0.2)
 
 
+@app.route("/view")
+def view():
+    # """Ruta para los músicos (solo visualización)."""
+    return render_template("view.html")
+
+
 @app.route("/")
 def index():
     return render_template("index.html")

@@ -17,6 +17,7 @@
         const socket = io();
         let isStreaming = false;
 
+        // boton Iniciar Streaming
         document.getElementById('toggle_stream').addEventListener('click', () => {
             isStreaming = !isStreaming;
             socket.emit('toggle_stream', { is_streaming: isStreaming });
